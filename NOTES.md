@@ -14,6 +14,7 @@ For the gchp_model image, currently have memory problems (https://github.com/geo
 
     cd gchp/gchp_model
     docker build -t geoschem/gchp_model .
+    docker login -u <Docker Hub username> -p <password>
     docker push geoschem/gchp_model
 
 ## Useful references:
