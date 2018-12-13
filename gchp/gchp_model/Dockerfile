@@ -61,7 +61,7 @@ RUN touch gchp.env && make compile_clean
 # Will mount output directory to external volume
 RUN rm -r OutputDir && ln -sf /OutputDir OutputDir \
 # correctly link restart file
-    && ln -sf /ExtData/GEOSCHEM_RESTARTS/v2018-11/initial_GEOSChem_rst.c24_standard.nc  initial_GEOSChem_rst.c24_standard.nc \
+    && ln -sf /ExtData/GEOSCHEM_RESTARTS/v2016-07/initial_GEOSChem_rst.c24_standard.nc  initial_GEOSChem_rst.c24_standard.nc \
 # read low-resolution metfields to save space
     && ln -sf /ExtData/GEOS_4x5/GEOS_FP MetDir \
     && sed -i -e 1,120s/025x03125.nc/4x5.nc/g ExtData.rc \
