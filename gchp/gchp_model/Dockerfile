@@ -73,4 +73,9 @@ RUN rm -r OutputDir && ln -sf /OutputDir OutputDir \
     && sed -i -e "s/'StateMet_avg',/#'StateMet_avg',/" HISTORY.rc \
     && sed -i -e "s/'StateMet_inst',/#'StateMet_inst',/" HISTORY.rc
 
+# Fix error message "Read -1, expected xxxx errno = 1"
+# https://github.com/open-mpi/ompi/issues/4948#issuecomment-395468231
+# https://hpc.github.io/charliecloud/faq.html#communication-between-ranks-on-the-same-node-fails
+ENV OMPI_MCA_btl_vader_single_copy_mechanism=none
+
 CMD ["/bin/bash"]
