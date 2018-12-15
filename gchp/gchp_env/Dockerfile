@@ -4,7 +4,8 @@ LABEL maintainer="GEOS-Chem Support Team <geos-chem-support@as.harvard.edu>"
 # Basic dependencies
 
 RUN apt-get update && apt-get install -y \
-    git vim bc gcc gfortran libnetcdf-dev libnetcdff-dev netcdf-bin \
+    git vim wget bc gcc gfortran \
+    libnetcdf-dev libnetcdff-dev netcdf-bin \
     python-numpy \
     && rm -rf /var/lib/apt/lists/*
 
