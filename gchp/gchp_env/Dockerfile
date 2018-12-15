@@ -24,7 +24,7 @@ RUN wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.3.tar.g
     && make install \
     # Fix library linking
     # https://askubuntu.com/a/1100000
-    && sudo ldconfig \
+    && ldconfig \
     && rm -rf /tmp/*
 
 # Additional fixes for GCHP
