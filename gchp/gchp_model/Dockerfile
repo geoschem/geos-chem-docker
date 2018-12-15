@@ -2,8 +2,9 @@ FROM geoschem/gchp_env
 LABEL maintainer="GEOS-Chem Support Team <geos-chem-support@as.harvard.edu>"
 
 # Git tag or commit
-ARG GC_VERSION=b544322
-ARG GCHP_VERSION=12.1.0
+ARG GC_VERSION=12.1.1
+ARG GCHP_VERSION="bugfix/GCHP_issues"
+# Fix GCHP run-time problems. See https://github.com/geoschem/gchp/issues/6#issuecomment-447475255
 
 # Input & output data path
 # Need to mount real data volume at run-time
@@ -14,8 +15,6 @@ WORKDIR /tutorial
 # Source code
 RUN git clone https://github.com/geoschem/geos-chem.git Code.GCHP \
     && cd Code.GCHP && git checkout $GC_VERSION \
-    # Temporary fix for https://github.com/geoschem/gchp/issues/5
-    && sed -i -e '/@$(MAKE) exe/d' HEMCO/Makefile \
     && git clone https://github.com/geoschem/gchp.git GCHP \
     && cd GCHP && git checkout $GCHP_VERSION \
     && cd Run && printf "/ExtData \n 2 \n 1 \n /tutorial \n gchp_standard \n n" | ./createRunDir.sh
