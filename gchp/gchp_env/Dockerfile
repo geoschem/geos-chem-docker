@@ -1,16 +1,33 @@
 FROM ubuntu:18.04
 LABEL maintainer="GEOS-Chem Support Team <geos-chem-support@as.harvard.edu>"
 
+# Basic dependencies
+
 RUN apt-get update && apt-get install -y \
     git vim bc gcc gfortran libnetcdf-dev libnetcdff-dev netcdf-bin \
-    python-numpy mpich \
+    python-numpy \
     && rm -rf /var/lib/apt/lists/*
 
+# =========================
+# OpenMPI 3
+# =========================
+# https://www.open-mpi.org/software/ompi/v3.1/
+
+WORKDIR /tmp
+
+RUN wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.3.tar.gz \
+    && tar zxf openmpi-3.1.3.tar.gz \
+    && cd openmpi-3.1.3 \
+    && ./configure prefix=/usr/local/ \
+    && make -j4 \
+    && make install \
+    # Fix library linking
+    # https://askubuntu.com/a/1100000
+    && sudo ldconfig \
+    && rm -rf /tmp/*
+
 # Additional fixes for GCHP
-RUN ln -s /usr/include/mpich/* /usr/include/ \
-    && ln -s /usr/bin/make /usr/bin/gmake \
-    && ln -s /usr/lib/mpich/lib/libmpichfort.so /usr/lib/mpich/lib/libmpichf90.so \
-    && ln -s /usr/lib/mpich/lib/libmpichfort.a /usr/lib/mpich/lib/libmpichf90.a
+RUN ln -s /usr/bin/make /usr/bin/gmake
 
 # GEOS-Chem environment variables
 ENV CC=gcc CXX=g++ FC=gfortran
@@ -29,9 +46,11 @@ ENV LD_LIBRARY_PATH=$NETCDF_FORTRAN_HOME/lib:$LD_LIBRARY_PATH
 # GCHP-specific environment
 ENV OMPI_CC=$CC OMPI_CXX=$CXX OMPI_FC=$FC \
     COMPILER=$FC ESMF_COMPILER=$FC \
-    MPI_ROOT=/usr  \
-    ESMF_COMM=mpich2 \
+    MPI_ROOT=/usr/local  \
+    ESMF_COMM=openmpi \
     ESMF_BOPT=O
 
 # fix Perl error message
 ENV LANG C
+
+WORKDIR /
