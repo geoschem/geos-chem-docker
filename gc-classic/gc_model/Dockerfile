@@ -55,5 +55,16 @@ RUN ln -s /OutputDir OutputDir \
 # Restart file path
 RUN ln -s /ExtData/GEOSCHEM_RESTARTS/v2018-11/initial_GEOSChem_rst.4x5_standard.nc GEOSChem.Restart.20160701_0000z.nc4
 
+
+# Use short simulation period for tutorial purpose
+RUN sed -i -e 's#End   YYYYMMDD.*#End   YYYYMMDD, hhmmss  : 20160701 002000#' input.geos \
+# reduce output size for tutorial purpose
+    && sed -i -e 's#EXPID:  ./GEOSChem.*#EXPID: ./OutputDir/GEOSChem#' HISTORY.rc \
+    && sed -i -e "s/#'SpeciesConc',/'SpeciesConc',/" HISTORY.rc \
+    && sed -i -e 's#SpeciesConc.frequency.*#SpeciesConc.frequency:      00000000 002000#' HISTORY.rc \
+    && sed -i -e 's#SpeciesConc.duration.*#SpeciesConc.duration:       00000000 002000#' HISTORY.rc \
+    && sed -i -e "s#SpeciesConc.mode.*#SpeciesConc.mode:           'instantaneous'#" HISTORY.rc \
+    && sed -i -e "s#SpeciesConc.fields.*#SpeciesConc.fields:         'SpeciesConc_NO             ', 'GIGCchem',\n                              'SpeciesConc_CO             ', 'GIGCchem',\n                              'SpeciesConc_O3             ', 'GIGCchem',#" HISTORY.rc
+
 # Set default command for `docker run`
 CMD ["/bin/bash"]
