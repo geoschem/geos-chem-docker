@@ -11,5 +11,5 @@ You can download and run this image using the following commands:
     docker pull geoschem/gchp_model
     input_path=/full/path/to/input/directory/on/host
     output_path=/full/path/to/output/directory/on/host
-    docker run --rm -it -v $input_path:/ExtData -v $output_path:/OutputDir  zhuangjw/gc_model
-    mpirun -np 6 ./geos  # inside container, just execute model
+    docker run --rm -it -v $input_path:/ExtData -v $output_path:/OutputDir  zhuangjw/gchp_model
+    mpirun -np 6 -oversubscribe ./geos  # inside container, just execute model
