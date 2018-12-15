@@ -68,6 +68,9 @@ RUN rm -r OutputDir && ln -sf /OutputDir OutputDir \
     && sed -i -e "s#DEBUG_LEVEL.*#DEBUG_LEVEL: 5#" CAP.rc \
 # Turn off CEDS as GCHP 12.1.0 still reads the old, large file.
     && sed -i -e "s#.--> CEDS.*# --> CEDS                   :       false#" HEMCO_Config.rc \
-    && sed -i -e "s#.--> CEDS_SHIP.*# --> CEDS                   :       false#" HEMCO_Config.rc
+    && sed -i -e "s#.--> CEDS_SHIP.*# --> CEDS                   :       false#" HEMCO_Config.rc \
+# Turn off StateMet diagnostics to prevent error in https://github.com/geoschem/gchp/issues/12
+    && sed -i -e "s/'StateMet_avg',/#'StateMet_avg',/" HISTORY.rc \
+    && sed -i -e "s/'StateMet_inst',/#'StateMet_inst',/" HISTORY.rc
 
 CMD ["/bin/bash"]
