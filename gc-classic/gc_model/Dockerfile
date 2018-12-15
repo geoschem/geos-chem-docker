@@ -2,8 +2,8 @@ FROM geoschem/gc_env
 LABEL maintainer="GEOS-Chem Support Team <geos-chem-support@as.harvard.edu>"
 
 # ARG is for build-time arguments, not used in run-time (as opposed to ENV)
-ARG GC_VERSION=12.1.0
-ARG UT_VERSION=12.1.0
+ARG GC_VERSION=12.1.1
+ARG UT_VERSION=12.1.1
 
 # Input data path as required by UT
 # Need to mount real data volume at run-time
@@ -18,8 +18,8 @@ RUN mkdir -p /ExtData/HEMCO && mkdir /OutputDir
 # WORKDIR does `mkdir` (if needed) and `cd` together
 WORKDIR /tutorial
 
-RUN git clone https://github.com/geoschem/geos-chem.git Code.$GC_VERSION \
-    && cd Code.$GC_VERSION && git checkout $GC_VERSION
+RUN git clone https://github.com/geoschem/geos-chem.git Code.GC-classic \
+    && cd Code.GC-classic && git checkout $GC_VERSION
 
 # We are back to WORKDIR after each RUN
 RUN git clone https://github.com/geoschem/geos-chem-unittest.git UT \
@@ -29,7 +29,7 @@ RUN git clone https://github.com/geoschem/geos-chem-unittest.git UT \
 # This could be trivially done by text editors by we want full automation
 # Use '#' as delimiter so the line can contain '/' and ':'
 # Use .* to match the rest of the line
-    && sed -i -e 's#CODE_DIR    :=.*#CODE_DIR    :=/tutorial/Code.$(VERSION)#' runs/shared_inputs/Makefiles/Makefile \
+    && sed -i -e 's#CODE_DIR    :=.*#CODE_DIR    :=/tutorial/Code.GC-classic#' runs/shared_inputs/Makefiles/Makefile \
     && cd perl \
     && sed -i -e 's#GCGRID_ROOT    :.*#GCGRID_ROOT    : /#' CopyRunDirs.input \
     && sed -i -e 's#DATA_ROOT      :.*#DATA_ROOT      : /ExtData#' CopyRunDirs.input \
@@ -42,7 +42,7 @@ RUN git clone https://github.com/geoschem/geos-chem-unittest.git UT \
 # remove UT to reduce image size
     && rm -rf /tutorial/UT
 
-# WORKDIR accepts relative path (relative to current WORKDIR)
+# WORKDIR accepts relative path, but it is recommended to use absolute path
 WORKDIR /tutorial/geosfp_4x5_standard
 
 # compile model
