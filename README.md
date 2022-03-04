@@ -1,5 +1,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/geoschem/geos-chem-docker/blob/master/LICENSE.txt)
 
+## NOTE: THIS REPOSITORY IS OBSOSLETE AND HAS BEEN ARCHIVED
+
 # Dockerfiles for GEOS-Chem
 
 Docker containers allow platform-independent installation of GEOS-Chem-classic and GCHP
